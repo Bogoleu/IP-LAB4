@@ -1,0 +1,24 @@
+@startuml
+!include <C4/C4_Container>
+
+LAYOUT_LANDSCAPE()
+
+Person(client, "Client", "Utilizează aplicația bancară")
+System_Boundary(banking_app, "Aplicatie Bancara") {
+    Container(web_mobile, "Aplicație Web & Mobile", "React Native / Angular", "Interfața utilizatorului")
+    Container(backend, "Backend Server", "Spring Boot", "Gestionează logica de business")
+    Container(ai_service, "AI Chatbot Service", "Python NLP", "Oferă răspunsuri AI utilizatorilor")
+    ContainerDb(db, "Database", "PostgreSQL", "Stochează conturi și tranzacții")
+    Container(auth, "Authentication Service", "OAuth 2.0", "Gestionează autentificarea")
+    Container(api, "Banking API", "REST API", "Interfața cu sistemele bancare")
+}
+
+Rel(client, web_mobile, "Folosește aplicația")
+Rel(web_mobile, backend, "Trimitere și procesare cereri")
+Rel(web_mobile, ai_service, "Interacțiune cu chatbot-ul")
+Rel(ai_service, backend, "Trimite întrebările complexe către operatori")
+Rel(backend, db, "Citire și scriere date")
+Rel(backend, auth, "Verificare autentificare")
+Rel(backend, api, "Procesare plăți și tranzacții")
+
+@enduml
