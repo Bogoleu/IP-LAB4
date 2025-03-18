@@ -1,4 +1,29 @@
-@startuml c4
-Alice -> Bob: Hello
-Bob -> Alice: Hi!
+@startuml
+!include <C4/C4_Context>
+
+LAYOUT_LANDSCAPE()
+
+Person(client, "Client", "Un utilizator care detine un cont bancar")
+Person(operator, "Operator", "Angajat al bancii care ajuta clientul")
+Person(admin, "Administrator", "Gestioneaza sistemul si conturile operatorilor")
+Person_Ext(phone, "Telefon", "Dispozitivul prin care utilizatorul acceseaza aplicatia")
+Person_Ext(ai_chatbot, "AI Chatbot", "Raspunde la intrebarile clientilor")
+
+System_Boundary(banking_app, "Aplicatie Bancara") {
+    System(web_mobile, "Aplicație Web & Mobile", "Permite clientilor sa isi gestioneze conturile")
+    System(ai_service, "AI Chatbot Service", "Ofera suport AI clientilor")
+    System(db, "Database", "Stocheaza datele utilizatorilor si tranzactiile")
+    System(auth, "Authentication Service", "Asigura autentificarea si securitatea")
+    System(api, "Banking API", "Conecteaza aplicatia la sistemele bancare")
+}
+
+Rel(client, web_mobile, "Utilizeaza aplicatia pentru gestionarea contului")
+Rel(client, ai_chatbot, "Pune intrebari despre cont si servicii")
+Rel(ai_chatbot, operator, "Trimite intrebarile complexe pentru verificare")
+Rel(operator, db, "Gestioneaza conturile clientilor")
+Rel(admin, db, "Monitorizeaza activitatea operatorilor")
+Rel(web_mobile, auth, "Autentificare securizata")
+Rel(web_mobile, api, "Efectuare tranzactii bancare")
+Rel(phone, web_mobile, "Acceseaza aplicatia si permite autentificare biometrica")
+
 @enduml
