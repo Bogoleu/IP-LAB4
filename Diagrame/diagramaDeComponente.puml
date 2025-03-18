@@ -1,24 +1,32 @@
 @startuml
-!include <C4/C4_Container>
+!include <C4/C4_Component>
 
 LAYOUT_LANDSCAPE()
 
-Person(client, "Client", "Utilizează aplicația bancară")
-System_Boundary(banking_app, "Aplicatie Bancara") {
-    Container(web_mobile, "Aplicație Web & Mobile", "React Native / Angular", "Interfața utilizatorului")
-    Container(backend, "Backend Server", "Spring Boot", "Gestionează logica de business")
-    Container(ai_service, "AI Chatbot Service", "Python NLP", "Oferă răspunsuri AI utilizatorilor")
-    ContainerDb(db, "Database", "PostgreSQL", "Stochează conturi și tranzacții")
-    Container(auth, "Authentication Service", "OAuth 2.0", "Gestionează autentificarea")
-    Container(api, "Banking API", "REST API", "Interfața cu sistemele bancare")
-}
+Container(web_mobile, "Aplicație Web & Mobile", "React Native / Angular", "Interfața utilizatorului")
+Container(backend, "Backend Server", "Spring Boot", "Gestionează logica de business")
+ContainerDb(db, "Database", "PostgreSQL", "Stochează conturi și tranzacții")
 
-Rel(client, web_mobile, "Folosește aplicația")
-Rel(web_mobile, backend, "Trimitere și procesare cereri")
-Rel(web_mobile, ai_service, "Interacțiune cu chatbot-ul")
-Rel(ai_service, backend, "Trimite întrebările complexe către operatori")
-Rel(backend, db, "Citire și scriere date")
-Rel(backend, auth, "Verificare autentificare")
-Rel(backend, api, "Procesare plăți și tranzacții")
+Component(web_ui, "UI Component", "Interfață grafică pentru utilizator")
+Component(transaction_manager, "Transaction Manager", "Gestionează plățile și transferurile")
+Component(chatbot_ui, "Chatbot UI", "Permite interacțiunea cu AI-ul")
+Component(auth_module, "Authentication Module", "Gestionează autentificarea utilizatorilor")
+
+Component(user_service, "User Service", "Gestionează datele utilizatorilor")
+Component(transaction_service, "Transaction Service", "Procesează plățile și transferurile")
+Component(security_manager, "Security Manager", "Asigură securitatea datelor")
+Component(chatbot_controller, "Chatbot Controller", "Intermediază comunicarea între client și chatbot")
+
+Rel(web_ui, web_mobile, "Face parte din")
+Rel(transaction_manager, backend, "Face parte din")
+Rel(chatbot_ui, backend, "Face parte din")
+Rel(auth_module, backend, "Face parte din")
+
+Rel(web_mobile, user_service, "Trimite cereri pentru gestionarea conturilor")
+Rel(web_mobile, transaction_service, "Trimite cereri pentru plăți și transferuri")
+Rel(web_mobile, chatbot_controller, "Comunică cu AI-ul")
+
+Rel(user_service, db, "Stochează și citește date utilizator")
+Rel(transaction_service, db, "Stochează și citește tranzacții")
 
 @enduml
